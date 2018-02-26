@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package EJERCIO2;
+package EJERCICIO2;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
@@ -19,6 +21,7 @@ import java.util.logging.Logger;
 public class URLBrowser {
     private static String url="";
     private static URL page=null;
+    private static FileWriter writer;
     public static void main(String[] args){        
         try(BufferedReader reader
               = new BufferedReader(new InputStreamReader(System.in))){
@@ -27,19 +30,26 @@ public class URLBrowser {
         }catch(IOException x){
             x.printStackTrace();
         }
-       /** try {
+        try {
             page = new URL(url);
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
-        try (BufferedReader reader
-              = new BufferedReader(new InputStreamReader(url.openStream()))) {
-        String inputLine = null;
-        while ((inputLine = reader.readLine()) != null) {
-     System.out.println(inputLine);
+        try{
+            writer = new FileWriter("./src/EJERCICIO2/index.html");
+        }catch(IOException ex){
+            ex.getStackTrace();
         }
-     } catch (IOException x) {
+        try (BufferedReader reader
+                = new BufferedReader(new InputStreamReader(page.openStream()))) {
+            String inputLine = null;
+            while ((inputLine = reader.readLine()) != null) {
+                writer.write(inputLine);
+            }
+             writer.close();
+        } catch (IOException x) {
          x.printStackTrace();
-     }**/
+     }
+       
     }
 }
