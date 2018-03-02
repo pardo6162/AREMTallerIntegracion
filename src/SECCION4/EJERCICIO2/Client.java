@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SESION4.EJERCICIO1;
+package SECCION4.EJERCICIO2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.net.UnknownHostException;
  *
  * @author andres
  */
-public class ClientSquare {
+public class Client {
     public static void main(String[] args) throws IOException {
         Socket echoSocket = null;
         PrintWriter out = null;
