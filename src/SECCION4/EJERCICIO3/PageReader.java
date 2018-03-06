@@ -20,7 +20,8 @@ public class PageReader {
     private File page=null;
     private String filePath;
     
-    public  void  PageReader(String filePath){
+    public  PageReader(String filePath){
+        System.out.printf("%s",filePath);
         page=new File(filePath);
         this.filePath=filePath;
     }
@@ -33,8 +34,9 @@ public class PageReader {
             String line;
             while((line = bReader.readLine())!= null)
                 result+=line;
+            bReader.close();
         }catch(FileNotFoundException ex){
-            System.err.println("El recurso solicitado no existe");
+            System.err.println("El recurso solicitado"+filePath +"no existe"+page.getPath()+page);
             ex.printStackTrace();
             
         }catch(IOException ex){
