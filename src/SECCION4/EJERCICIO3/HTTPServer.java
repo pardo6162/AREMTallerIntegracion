@@ -35,17 +35,17 @@ public class HTTPServer {
             System.err.println("Accept failed.");
             System.exit(1);
         }
-        //PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedWriter out =new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        //BufferedWriter out =new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         BufferedReader in = new BufferedReader(
         new InputStreamReader(
             clientSocket.getInputStream()
         ));
-String inputLine, outputLine;
+        String inputLine, outputLine;
         while ((inputLine = in.readLine()) != null) {
             System.out.println("Received: " + inputLine);
             if (!in.ready()) {
-                //break;
+                break;
             }
         }
         outputLine ="HTTP/1.1 200 OK \r\n"
