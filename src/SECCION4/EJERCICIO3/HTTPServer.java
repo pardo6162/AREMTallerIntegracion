@@ -40,20 +40,12 @@ public class HTTPServer {
             BufferedWriter out =new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
             BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));
             String inputLine, outputLine;
-            String page ="";
-            URL recurso;
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Received: " + inputLine);
-                if(inputLine.contains("GET")){
-                    int index =inputLine.indexOf("html");
-                    page= inputLine.substring(5,index+4 ).trim()  ;
-                }
-                
                 if (!in.ready()) {
                     break;
                 }
             }
-            PageReader newPage= new PageReader(page);
             outputLine ="HTTP/1.1 200 OK \r\n"
                     +"Content-Type: text/html; charset=utf-8\r\n"
                     +"Cache-Control: public, max-age=60, s-maxage=300\r\n"
@@ -68,7 +60,17 @@ public class HTTPServer {
                     +"Transfer-Encoding: chunked\r\n"  
                     +"\r\n"
                     +"3c6f"
-                    +newPage.loadPage();
+                    + "<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<meta charset=\"UTF-8\">"
+                    + "<title>Title of the document</title>\n"
+                    + "</head>"
+                    + "<body>"
+                    + "My Web Site"
+                    + "</body>"
+                    + "</html>"                                    
+                    + inputLine;
             out.write(outputLine);
             out.close();
             in.close();
