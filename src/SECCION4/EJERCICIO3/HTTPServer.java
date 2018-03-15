@@ -56,12 +56,34 @@ public class HTTPServer {
                     }
                 }
             }catch(IOException  ex){
-                    
+                    System.err.println("Error en la lectura del archivo");
             }
-                
             page=components[1];
-            String root="./pages";
-            String filePath =root+page;
+            String root;
+            String filePath;
+            if(page.endsWith(".html")){
+                root="./pages";
+                filePath= root+page;
+                PageReader  pr  =new PageReader(filePath);
+                String content=pr.loadPage();
+                outputLine ="HTTP/1.1 200 OK \r\n"
+                +"Content-Type: text/html\r\n"
+                +"\r\n"
+                + content                                   
+                + inputLine;
+                out.write(outputLine);
+            }else if(page.endsWith(".jpg")){
+                root="./img";
+                filePath=root+page;
+                ImageReader ir=new ImageReader(filePath);
+                byte[] img=ir.loadImage();
+                int imgLen=ir.getImgLength();
+                out.write("HTTP/1.1 200 OK \r\n");
+                out.write("Content-Type: image/jpeg\r\n");
+                out.write("\r\n");
+                out.write(img, 0, imgLen);
+            }    
+            
             /** 
           if (fileName.endsWith(".jpg"))
                   outToClient.writeBytes("Content-Type: image/jpeg\r\n");
@@ -72,14 +94,8 @@ public class HTTPServer {
           outToClient.writeBytes("\r\n");
 
           outToClient.write(fileInBytes, 0, numOfBytes);**/
-            PageReader  pr  =new PageReader(filePath);
-            String content=pr.loadPage();
-            outputLine ="HTTP/1.1 200 OK \r\n"
-                    +"Content-Type: text/html\r\n"
-                    +"\r\n"
-                    + content                                   
-                    + inputLine;
-            out.write(outputLine);
+            
+
             out.close();
             in.close();
             clientSocket.close();
