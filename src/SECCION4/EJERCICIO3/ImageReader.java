@@ -5,12 +5,14 @@
  */
 package SECCION4.EJERCICIO3;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -25,20 +27,20 @@ public class ImageReader {
         }
         
         public byte[] loadImage(){
-            int numOfBytes = (int) image.length();
+            byte[] data =null;
             try { 
-                FileInputStream inFile = new FileInputStream(pathFile);
-                byte[] imageInBytes = new byte[numOfBytes];
-                inFile.read(imageInBytes);
-                return imageInBytes;
+                FileInputStream inFile = new FileInputStream(image);
+                data =new byte[(int) image.length()];
+                inFile.read(data);
+                inFile.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ImageReader.class.getName()).log(Level.SEVERE, null, ex);
             } catch(IOException ex){
-                
+                System.err.println("Error en la lectura de el archivo");
             }  
             
             
-            return null;
+            return data;
             
         }
         

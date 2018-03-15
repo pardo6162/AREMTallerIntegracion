@@ -5,15 +5,19 @@
  */
 package SECCION4.EJERCICIO3;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -76,26 +80,15 @@ public class HTTPServer {
                 root="./img";
                 filePath=root+page;
                 ImageReader ir=new ImageReader(filePath);
-                byte[] img=ir.loadImage();
-                int imgLen=ir.getImgLength();
-                out.write("HTTP/1.1 200 OK \r\n");
-                out.write("Content-Type: image/jpeg\r\n");
-                out.write("\r\n");
-                out.write(img, 0, imgLen);
+                byte[] data = ir.loadImage();
+                DataOutputStream binaryOut  =new DataOutputStream(clientSocket.getOutputStream());
+                binaryOut.writeBytes("HTTP/1.1 200 OK \r\n");
+                binaryOut.writeBytes("Content-Type: image/jpeg\r\n");
+                binaryOut.writeBytes("Content-Length: " + data.length);
+                binaryOut.writeBytes("\r\n\r\n");
+                binaryOut.write(data);
+                binaryOut.close();
             }    
-            
-            /** 
-          if (fileName.endsWith(".jpg"))
-                  outToClient.writeBytes("Content-Type: image/jpeg\r\n");
-          if (fileName.endsWith(".gif"))
-                  outToClient.writeBytes("Content-Type: image/gif\r\n");
-
-          outToClient.writeBytes("Content-Length: " + numOfBytes + "\r\n");
-          outToClient.writeBytes("\r\n");
-
-          outToClient.write(fileInBytes, 0, numOfBytes);**/
-            
-
             out.close();
             in.close();
             clientSocket.close();
