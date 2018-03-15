@@ -5,36 +5,44 @@
  */
 package SECCION4.EJERCICIO3;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author andres
  */
 public class ImageReader {
-    //BufferedImage img = ImageIO.read(new URL("http://stackoverflow.com/content/img/so/logo.png"));
-    /**void readImage() throws IOException
-{
-    socket = new Socket("upload.wikimedia.org", 80);
-
-
-    DataOutputStream bw = new DataOutputStream(new DataOutputStream(socket.getOutputStream()));
-    bw.writeBytes("GET /wikipedia/commons/8/80/Knut_IMG_8095.jpg HTTP/1.1\n");
-    bw.writeBytes("Host: wlab.cs.bilkent.edu.tr:80\n\n");
-
-    DataInputStream in = new DataInputStream(socket.getInputStream());
-
-    File file = new File("imgg.jpg");
-    file.createNewFile();
-    DataOutputStream dos = new DataOutputStream(new FileOutputStream(file));
-    int count;
-    byte[] buffer = new byte[8192];
-    while ((count = in.read(buffer)) > 0)
-    {
-      dos.write(buffer, 0, count);
-      dos.flush();
-    }
-    dos.close();
-    System.out.println("image transfer done");
-
-    socket.close();     
-}**/
+    private String pathFile;
+    private  File image;
+        public ImageReader(String pathFile){
+            this.pathFile=pathFile;
+            image=new File(pathFile);
+        }
+        
+        public byte[] loadImage(){
+            int numOfBytes = (int) image.length();
+            try { 
+                FileInputStream inFile = new FileInputStream(pathFile);
+                byte[] imageInBytes = new byte[numOfBytes];
+                inFile.read(imageInBytes);
+                return imageInBytes;
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ImageReader.class.getName()).log(Level.SEVERE, null, ex);
+            } catch(IOException ex){
+                
+            }  
+            
+            
+            return null;
+            
+        }
+        
+        public int getImgLength(){
+            return  (int) image.length();
+        }
 }

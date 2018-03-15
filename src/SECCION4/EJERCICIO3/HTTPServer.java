@@ -62,6 +62,16 @@ public class HTTPServer {
             page=components[1];
             String root="./pages";
             String filePath =root+page;
+            /** 
+          if (fileName.endsWith(".jpg"))
+                  outToClient.writeBytes("Content-Type: image/jpeg\r\n");
+          if (fileName.endsWith(".gif"))
+                  outToClient.writeBytes("Content-Type: image/gif\r\n");
+
+          outToClient.writeBytes("Content-Length: " + numOfBytes + "\r\n");
+          outToClient.writeBytes("\r\n");
+
+          outToClient.write(fileInBytes, 0, numOfBytes);**/
             PageReader  pr  =new PageReader(filePath);
             String content=pr.loadPage();
             outputLine ="HTTP/1.1 200 OK \r\n"
