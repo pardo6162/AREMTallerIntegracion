@@ -21,7 +21,6 @@ public class PageReader {
     private String filePath;
     
     public  PageReader(String filePath){
-        System.out.printf("%s",filePath);
         page=new File(filePath);
         this.filePath=filePath;
     }
@@ -33,10 +32,10 @@ public class PageReader {
             BufferedReader bReader = new BufferedReader(fReader);
             String line;
             while((line = bReader.readLine())!= null)
-                result+=line;
+                result+=line+"\n";
             bReader.close();
         }catch(FileNotFoundException ex){
-            System.err.println("El recurso solicitado"+filePath +"no existe"+page.getPath()+page);
+            System.err.println("El recurso solicitado "+filePath +" no existe");
             ex.printStackTrace();
             
         }catch(IOException ex){
@@ -45,5 +44,10 @@ public class PageReader {
         }
         
         return result;
+    }
+    
+    public static void main(String[] args){
+        PageReader pr= new PageReader(".//index.html");
+        System.out.println(pr.loadPage());
     }
 }

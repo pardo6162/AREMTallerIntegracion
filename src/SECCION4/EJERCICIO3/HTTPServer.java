@@ -39,37 +39,35 @@ public class HTTPServer {
             }   
             BufferedWriter out =new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
             BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));
-            String inputLine, outputLine;
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println("Received: " + inputLine);
-                if (!in.ready()) {
-                    break;
+            String inputLine="";
+            String outputLine;
+            String page="";
+            String components[]= null;
+            int count=0;
+            try{
+                while ((inputLine = in.readLine()) != null) {
+                    if(count==0){
+                        components=inputLine.split(" ");
+                        count+=1;
+                    }   
+                    System.out.println("Received: " + inputLine);
+                    if (!in.ready()) {
+                        break;
+                    }
                 }
+            }catch(IOException  ex){
+                    
             }
+                
+            page=components[1];
+            String root="./pages";
+            String filePath =root+page;
+            PageReader  pr  =new PageReader(filePath);
+            String content=pr.loadPage();
             outputLine ="HTTP/1.1 200 OK \r\n"
-                    +"Content-Type: text/html; charset=utf-8\r\n"
-                    +"Cache-Control: public, max-age=60, s-maxage=300\r\n"
-                    +"Vary: Accept-Encoding\r\n"
-                    +"Content-Encoding: raw\r\n"
-                    +"Server: DPS/1.3.5\r\n"
-                    +"X-SiteId: 2000\r\n"
-                    +"Set-Cookie: dps_site_id=2000; path=/\r\n"
-                    +"ETag: a1be084ec13bc207c17c49955f875fab\r\n"
-                    +"Date: Mon, 26 Feb 2018 21:47:54 GMT\r\n"
-                    +"Connection: keep-alive\r\n"
-                    +"Transfer-Encoding: chunked\r\n"  
+                    +"Content-Type: text/html\r\n"
                     +"\r\n"
-                    +"3c6f"
-                    + "<!DOCTYPE html>"
-                    + "<html>"
-                    + "<head>"
-                    + "<meta charset=\"UTF-8\">"
-                    + "<title>Title of the document</title>\n"
-                    + "</head>"
-                    + "<body>"
-                    + "My Web Site"
-                    + "</body>"
-                    + "</html>"                                    
+                    + content                                   
                     + inputLine;
             out.write(outputLine);
             out.close();
